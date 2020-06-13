@@ -1,4 +1,5 @@
 using System.Text;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -76,7 +77,9 @@ namespace ZburseCo
                     opt.SerializerSettings.ReferenceLoopHandling =
                         Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 }); ;
-
+            services.AddCors();
+            services.AddAutoMapper(typeof(Startup));
+            services.AddScoped<IRepository, Repository>();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -97,6 +100,8 @@ namespace ZburseCo
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseStaticFiles();

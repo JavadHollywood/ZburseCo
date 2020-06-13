@@ -13,7 +13,6 @@ import { AuthService } from './_services/auth.service';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
-import { AlertifyService } from './_services/alertify.service';
 import { AuthGuard } from './_guards/auth.guard';
 import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 import { HasRoleDirective } from './_directives/hasRole.directive';
@@ -24,6 +23,7 @@ import { PhotoManagementComponent } from './admin/photo-management/photo-managem
 import { RolesModalComponent } from './admin/roles-modal/roles-modal.component';
 import { CommonModule } from '@angular/common';
 import {TabsModule} from 'ngx-bootstrap/tabs';
+import { AlertifyService } from './_services/alertify.service';
 
 
 export function tokenGetter(){
