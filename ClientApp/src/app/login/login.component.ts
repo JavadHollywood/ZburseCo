@@ -16,6 +16,9 @@ export class LoginComponent implements OnInit {
     , private alertify:AlertifyService , private router:Router) { }
 
   ngOnInit() {
+    if (this.loggedIn()){
+      this.router.navigate(['/dashboard']);
+    }
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -25,10 +28,13 @@ export class LoginComponent implements OnInit {
   login(){
     this.authService.login(this.loginForm.value).subscribe(next=>{
      this.alertify.success("login success");
-     this.router.navigate(['/home']);
+     this.router.navigate(['/dashboard']);
     },error=>{
+      console.log(error);
      this.alertify.error(error);
     });
   }
-
+  loggedIn(){
+    return this.authService.loggedIn();
+  }
 }

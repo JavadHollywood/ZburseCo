@@ -24,6 +24,7 @@ import { RolesModalComponent } from './admin/roles-modal/roles-modal.component';
 import { CommonModule } from '@angular/common';
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import { AlertifyService } from './_services/alertify.service';
+import { ErrorInterceptorProvider } from './_services/error.interceptor';
 
 
 export function tokenGetter(){
@@ -58,12 +59,13 @@ export function tokenGetter(){
       JwtModule.forRoot({
          config:{
             tokenGetter :tokenGetter,
-            whitelistedDomains:['localhost:5000'],
-            blacklistedRoutes:['localhost:5000/api/auth']
+            whitelistedDomains:['localhost:44328'],
+            blacklistedRoutes:['localhost:44328/api/auth']
          }
       })
    ],
    providers: [
+      ErrorInterceptorProvider,
       AuthService,
       AlertifyService,
       AuthGuard,

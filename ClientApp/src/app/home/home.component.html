@@ -1,12 +1,23 @@
 <div class="container mt-5" >
   <div style="text-align: center" style="margin-top: 100px;">
-    <div class="text-center">
-      <button class="btn btn-primary btn-lg" [routerLink]="['/register']"> Sign Up </button>
-    </div>
-    
-    <br/>
-    <div class="text-center">
-      <button *ngIf="!authService.loggedIn()" class="btn btn-info btn-lg" [routerLink]="['/login']">Login </button>
+   
+    <div class="card-deck">
+      <div class="card">
+        <img class="card-img-top" src="../../assets/img/forex.jpg" alt="Forex">
+        <div class="card-body">
+          <h5 class="card-title">Forex</h5>
+          <p class="card-text">This is a Forex</p>
+        </div>
+      </div>
+      <div class="card">
+        <img class="card-img-top" src="../../assets/img/forexbo.jpg" alt="Binary Options">
+        <div class="card-body">
+          <h5 class="card-title">Binary Options</h5>
+          <p class="card-text">This is a Binary Options</p>
+        </div>
+      </div>
+     
     </div>
   </div>
 </div>
+<!-- <app-login></app-login> -->

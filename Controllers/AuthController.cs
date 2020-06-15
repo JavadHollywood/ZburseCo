@@ -56,59 +56,24 @@ namespace ZburseCo.Controllers
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
             var user = await _userManager.FindByNameAsync(userForLoginDto.Username);
-            var result = await _signInManager.CheckPasswordSignInAsync(user, userForLoginDto.Password, false);
 
+            var result = await _signInManager
+                .CheckPasswordSignInAsync(user, userForLoginDto.Password, false);
 
             if (result.Succeeded)
             {
                 var appUser = await _userManager.Users.Include(p => p.Photos)
-                .FirstOrDefaultAsync(u => u.NormalizedUserName == userForLoginDto.Username.ToUpper());
+                    .FirstOrDefaultAsync(u => u.NormalizedUserName == userForLoginDto.Username.ToUpper());
 
                 var userToReturn = _mapper.Map<UserForListDto>(appUser);
 
-                var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier,appUser.Id.ToString()),
-                new Claim(ClaimTypes.Name,appUser.UserName)
-            };
-
-                var roles = await _userManager.GetRolesAsync(appUser);
-
-                foreach (var role in roles)
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, role));
-                }
-
-
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-
-                    Subject = new ClaimsIdentity(claims),
-                    Expires = DateTime.Now.AddDays(1),
-                    SigningCredentials = creds
-                };
-
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-
-
                 return Ok(new
                 {
-                    token = tokenHandler.WriteToken(token),
+                    token = await GenerateJwtTokenAsync(appUser),
                     user = userToReturn
                 });
-
-
-                // return Ok(new
-                // {
-                //     token = GenerateJwtTokenAsync(appUser),
-                //     user=userToReturn
-                // });
-
-
             }
+
             return Unauthorized();
             // return BadRequest();
         }
